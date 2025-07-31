@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Local Community Event Portal</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{
+      background-color: #f0f8ff;
+    }
+  </style>
+</head>
+<body onbeforeunload="return checkForm()">
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#home">Home</a> |
+    <a href="#events">Events</a> |
+    <a href="#contact">Contact</a> |
+    <a href="help.html" target="_blank">Help</a>
+  </nav>
+  <!-- Main -->
+  <main>
+    <!-- Welcome Banner -->
+    <div id="welcomeBanner">
+      Welcome to the Community Event Portal!
+      <span style="color: red; font-weight: bold;">Special Offer: Free Entry Today!</span>
+    </div>
+
+    <!-- Home Section -->
+    <section id="home">
+      <h2 class="highlight">Home</h2>
+      <p>Stay updated with the latest community happenings.</p>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events">
+      <h2 class="highlight">Upcoming Events</h2>
+      <table>
+        <caption>PAST COMMUNITY EVENTS</caption>
+        <tr>
+        
+          <td><figure><img src="images/Music Festival.jpg Festival.jpg" alt="Music Festival" style="height:100px; width:200px;" title="Music Festival"class="Music Festival.jpg"><figcaption>MUSIC FESTIVAL</figcaption></figure></td>
+          <td><figure><img src="images/Food Carnival" alt="Food Carnival" style="height:100px; width:200px;" title="Food Carnival" class="Food Carnival"><figcaption>FOOD CARNIVAL</figcaption></figure></td>
+          <td><figure><img src="images/Art Gallery.jpg" alt="Art Gallery" style="height:100px; width:200px;" title="Art Show" class="Art Gallery.jpg"><figcaption>ART SHOW</figcaption></figure></td>
+        </tr>
+        <tr>
+          <td><figure><img src="images/Books.jpg" alt="Books" style="height:100px; width:200px;" title="Book Fair" class="Books.jpg"><figcaption>BOOK FAIR</figcaption></figure></td>
+          <td><figure><img src="images/Dance.jpg" alt="Dance" style="height:100px; width:200px;"  title="Dance Night" class="Dance.jpg"><figcaption>DANCE NIGHT</figcaption></figure></td>
+          <td><figure><img src="images/Science expo.jpg" alt="Science expo" style="height:100px; width:200px;" title="Science Expo" class="Science expo.jpg"><figcaption>SCIENCE EXPO</figcaption></figure></td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- Contact Section / Registration Form -->
+    <section id="contact">
+      <h2 class="highlight">Event Registration</h2>
+      <form onsubmit="showConfirmation(); return false;">
+        <label>
+          Name:
+          <input type="text" name="name" placeholder="Enter your name" required autofocus>
+        </label>
+
+        <label>
+          Email:
+          <input type="email" name="email" placeholder="example@mail.com" required>
+        </label>
+
+        <label>
+          Date:
+          <input type="date" name="eventDate" required>
+        </label>
+
+        <label>
+          Event Type:
+          <select name="eventType" required>
+            <option value="">Select</option>
+            <option value="music">Music</option>
+            <option value="food">Food</option>
+            <option value="art">Art</option>
+            <option value="book">Book</option>
+            <option value="dance">Dance</option>
+            <option value="science expo">Science Expo</option>
+          </select>
+        </label>
+
+        <label>
+          Message:
+          <textarea name="message" placeholder="Enter any message..."></textarea>
+        </label>
+
+        <button type="submit">Register</button>
+        <output id="confirmation"></output>
+      </form>
+      <div class="eventCard visible-card">
+      <p>This event card is visible.</p>
+      </div>
+
+      <div class="eventCard hidden-card">
+      <p>This event card is hidden using visibility: hidden.</p>
+      </div>
+
+     <div class="eventCard none-card">
+     <p>This event card is hidden using display: none.</p>
+     </div>
+    </section>
+
+    <!-- Feedback and Events Handling -->
+    <section>
+      <h2 class="highlight">Feedback</h2>
+      <label>
+        Phone Number:
+        <input type="text" id="phone" onblur="validatePhone()" placeholder="1234567890">
+      </label>
+
+      <label>
+        Select Event Type:
+        <select id="eventSelect" onchange="displayFee(); displayImage();">
+          <option value="">Select</option>
+          <option value="music">Music ($10)</option>
+          <option value="food">Food($10)</option>
+          <option value="art">Art ($5)</option>
+          <option value="book">Book($8)</option>
+          <option value="dance">Dance($12)</option>
+          <option value="science expo">Science Expo($10)</option>
+        </select>
+      </label>
+      <p id="feeDisplay"></p>
+     <!-- Dynamic Image -->
+     <div id="imageBox" style="margin-top: 10px;">
+      <img id="eventImage" src="" alt="Selected Event" style="width: 300px; display: none;">
+     </div>
+     <img id="eventImage" src="" alt="Selected Event"
+      style="width: 300px; display: none; cursor: pointer; transition: 0.3s;"
+      ondblclick="enlargeImage(this)">
+      <label>
+        Feedback:
+        <textarea id="feedbackBox" onkeyup="countChars()" rows="4" cols="40"></textarea>
+      </label>
+      <p>Character Count: <span id="charCount">0</span></p>
+      <button type="button" onclick="showFeedbackConfirmation()">Submit Feedback</button>
+      <p id="feedbackConfirmMsg"></p>
+    </section>
+
+    <!-- Video Invite -->
+    <section>
+      <h2 class="highlight">Event Promo Video</h2>
+      <video id="promoVideo" width="320" controls oncanplay="videoReady()">
+        <source src="promo.mp4" type="video/mp4">
+        Your browser does not support video playback.
+      </video>
+      <p id="videoMsg"></p>
+    </section>
+
+    <!-- Preferences -->
+    <section>
+      <h2 class="highlight">Your Preferences</h2>
+      <select id="prefEvent" onchange="savePreference()">
+        <option value="">Choose preferred event</option>
+        <option value="music">Music</option>
+        <option value="food">Food</option>
+        <option value="art">Art</option>
+        <option value="book">Book</option>
+        <option value="dance">Dance</option>
+        <option value="tech">Tech</option>
+      </select>
+      <button onclick="clearPreferences()">Clear Preferences</button>
+    </section>
+
+    <!-- Geolocation -->
+    <section>
+      <h2 class="highlight">Find Nearby Events</h2>
+      <button onclick="findLocation()">Find Nearby Events</button>
+      <p id="locationDisplay"></p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Local Community Council</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Registration confirmation
+    function showConfirmation() {
+      document.getElementById('confirmation').textContent = "Thank you! Your registration was submitted.";
+    }
+
+    // Event Handling
+    function validatePhone() {
+      const phone = document.getElementById('phone').value;
+      if (!/^\d{10}$/.test(phone)) {
+        alert('Please enter a valid 10-digit phone number.');
+      }
+    }
+
+    function displayFee() {
+      const value = document.getElementById('eventSelect').value;
+      const feeMap = { music: '$10', art: '$5', food : '$10' , book: '$8',dance:'$12',scienceexpo:'$10' };
+      document.getElementById('feeDisplay').textContent = value ? `Fee: ${feeMap[value]}` : '';
+    }
+    function displayImage() {
+  const select = document.getElementById('eventSelect');
+  const image = document.getElementById('eventImage');
+  const value = select.value;
+
+  const imageMap = {
+    music: 'Music Festival.jpg',
+    art: 'Art Gallery.jpg',
+    food: 'Food Carnival',
+    book:'Books.jpg',
+    dance:'Dance.jpg',
+    scienceexpo:'Science expo.jpg',
+  };
+
+  if (imageMap[value]) {
+    image.src = imageMap[value];
+    image.alt = value + " image";
+    image.style.display = 'block';
+  } else {
+    image.style.display = 'none';
+  }
+}
+
+    function enlargeImage(img) {
+      img.style.width = '300px';
+      img.style.border = '3px solid black';
+    }
+
+    function countChars() {
+      const len = document.getElementById('feedbackBox').value.length;
+      document.getElementById('charCount').textContent = len;
+    }
+    function showFeedbackConfirmation() {
+      document.getElementById('feedbackConfirmMsg').textContent = "Thanks! Your feedback has been submitted.";
+    }
+
+    // Video
+    function videoReady() {
+      document.getElementById('videoMsg').textContent = "Video ready to play!";
+    }
+
+    // Warn if form is partially filled
+    function checkForm() {
+      const formInputs = document.querySelector('form').querySelectorAll('input, textarea');
+      for (let input of formInputs) {
+        if (input.value) return "You have unsaved changes. Are you sure you want to leave?";
+      }
+    }
+
+    // Preferences
+    function savePreference() {
+      const value = document.getElementById('prefEvent').value;
+      localStorage.setItem('preferredEvent', value);
+    }
+
+    function clearPreferences() {
+      localStorage.clear();
+      sessionStorage.clear();
+      alert('Preferences cleared.');
+    }
+
+    window.onload = function () {
+      const pref = localStorage.getItem('preferredEvent');
+      if (pref) {
+        document.getElementById('prefEvent').value = pref;
+      }
+    };
+
+    // Geolocation
+    function findLocation() {
+      const output = document.getElementById('locationDisplay');
+      if (!navigator.geolocation) {
+        output.textContent = 'Geolocation is not supported by your browser.';
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          output.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        },
+        error => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              output.textContent = "Permission denied.";
+              break;
+            case error.TIMEOUT:
+              output.textContent = "Location request timed out.";
+              break;
+            default:
+              output.textContent = "Unable to retrieve location.";
+          }
+        },
+        { enableHighAccuracy: true }
+      );
+    }
+  </script>
+  <script src="main.js"></script>
+</body>
+</html>
